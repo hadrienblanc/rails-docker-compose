@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    command: 'mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3307:3306"
+
+  redis:
+    image: redis:5.0
+    command: redis-server # --requirepass dockerpassword
+    ports:
+      - '6379:6379'
+
+  web:
+    build: .
+    command: bundle exec rails s -p 3001 -b '0.0.0.0'
+    volumes:
+      - .:/myapp
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    environment:
+      - REDIS_URL=redis://redis:6379/1
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    links:
+      - db:db
+    ports:
+      - 8000:80
+  
+  worker:
+    depends_on:
+      - db
+      - redis
+    build: .
+    command: bundle exec sidekiq -q default -q mailers
+    volumes:
+      - '.:/myapp'
+    environment:
+    - REDIS_WORKER_URL=redis://redis:6379/0
