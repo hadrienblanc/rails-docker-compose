@@ -33,3 +33,7 @@ The current Makefile COPY the creatred Gemfile. So it's not currently suited to 
 make rails_new
 make up
 ```
+
+### .dockerignore
+
+The .dockerignore file lets you ignore certain folders or files from being included inside the docker container.
