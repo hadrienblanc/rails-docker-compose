@@ -11,7 +11,7 @@ The dockerfile for the rails image. It's a standard ruby 2.5 docker image.
 The rails application image
 
 ### db
-The MySQL database image
+The postgreSQL database image
 
 ### worker
 The rails (sidekiq) workers
