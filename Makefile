@@ -5,8 +5,6 @@
 init:
 	test -h ".git/hooks/pre-commit" || ln -s ".githooks/pre-commit" ".git/hooks/pre-commit" # add .githooks folder to local hooks
 	docker-compose build
-	# Initializing modules & provider plugins based on your terraform folder :
-	# terraform init terraform/
 	$(MAKE) reset
 
 reset:
@@ -32,10 +30,13 @@ resetdb:
 	$(MAKE) initdb
 
 rails_new:
-	rails new . # create a new ruby INSIDE the container
+	rails new . # create a new ruby inside the container
 
-up:
+run:
 	docker-compose up -d # detached mode
+
+start:
+	$(MAKE) run
 
 ps:
 	 docker-compose ps
@@ -54,15 +55,6 @@ bundle-install:
 
 brew-bundle:
 	brew bundle --verbose # use the Brewfile
-
-terraform_format:
-	terraform fmt
-
-terraform_apply:
-	terraform apply
-
-terraform_destroy:
-	terraform destory
 
 makefile_linter:
 	make -n Makefile
