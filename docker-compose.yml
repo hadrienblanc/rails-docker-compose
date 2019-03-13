@@ -1,17 +1,16 @@
 version: '3'
 services:
   db:
-    image: mysql:8.0
-    command: 'mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci'
+    image: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-    ports:
-      - "3307:3306"
+      POSTGRES_DB : myproject_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
   redis:
     image: redis:5.0
-    command: redis-server # --requirepass dockerpassword
+    command: redis-server
     ports:
       - '6379:6379'
 
@@ -27,14 +26,18 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379/1
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+  pgadmin:
+    image: dpage/pgadmin4:latest
     depends_on:
       - db
-    links:
-      - db:db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    volumes:
+      - '.:/app'
     ports:
-      - 8000:80
+      - "5050:80"
+    restart: always
   
   worker:
     depends_on:
