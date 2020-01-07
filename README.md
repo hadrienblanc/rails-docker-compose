@@ -27,7 +27,7 @@ The Makefile is used mainly as a knowledge keeper for the project, and secondly 
 ## Note
 
 You should create a new rails application if you start from this repo. 
-The current Makefile COPY the creatred Gemfile. So it's not currently suited to create the rails app in the docker image.
+The current Makefile COPY the created Gemfile. So it's not currently suited to create the rails app in the docker image.
 
 ```
 make rails_new
