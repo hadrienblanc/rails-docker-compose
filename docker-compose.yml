@@ -10,7 +10,7 @@ services:
       - "3307:3306"
 
   redis:
-    image: redis:5.0
+    image: redis:7.0
     command: redis-server # --requirepass dockerpassword
     ports:
       - '6379:6379'
